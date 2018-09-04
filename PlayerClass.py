@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sep  3 10:18:37 2018
+
+@author: Dan
+"""
+
 import numpy as np
 import matplotlib.pyplot as mp
 from matplotlib.colors import LinearSegmentedColormap
@@ -18,17 +25,18 @@ class Ship:
             
         def hit(self):
             self.hits += 1
+            # print("hit")
             if self.hits == self.length:
                 self.status = "Sunk!"
-                print("Sunk!")
-                return self.status
+                # print("Sunk!")
+            return self.status
             
+
         def reset(self):
             self.hits = 0
             self.status = "Afloat"
-    
 
-class Player:
+class player:
     
     def __init__(self):
         # creates a game board
@@ -42,35 +50,18 @@ class Player:
         self.Cruiser = Ship(3)
         self.Submarine = Ship(3)
         self.Destroyer = Ship(2)
-    
-    def populate(self, posns, orientations):
-        ### Populating board with ships ###
-        ### Each ship has a corresponding value used to identiy it when hit
-        # Carrier
-        if orientations[0] == 0:
-            self.shipBoard[posns[0][0]:posns[0][0]+5,posns[0][1]] = 1
-        else:
-            self.shipBoard[posns[0][0],posns[0][1]:posns[0][1]:posns[0][1]+5] = 1
-        # BattleShip
-        if orientations[1] == 0:
-            self.shipBoard[posns[1][0]:posns[1][0]+4,posns[1][1]] = 2
-        else:
-            self.shipBoard[posns[1][0],posns[0][1]:posns[1][1]:posns[1][1]+4] = 2
-        # Cruiser
-        if orientations[2] == 0:
-            self.shipBoard[posns[2][0]:posns[1][0]+3,posns[2][1]] = 3
-        else:
-            self.shipBoard[posns[2][0],posns[2][1]:posns[2][1]:posns[2][1]+3] = 3
-        # Submarine
-        if orientations[3] == 0:
-            self.shipBoard[posns[3][0]:posns[3][0]+3,posns[3][1]] = 4
-        else:
-            self.shipBoard[posns[3][0],posns[3][1]:posns[3][1]:posns[3][1]+3] = 4
-        # Destroyer
-        if orientations[4] == 0:
-            self.shipBoard[posns[4][0]:posns[4][0]+2,posns[4][1]] = 5
-        else:
-            self.shipBoard[posns[4][0],posns[4][1]:posns[4][1]:posns[4][1]+2] = 5
+        
+    def populate(self, tiles):
+        for i in range(5):
+            self.shipBoard[tiles[0][i][0],tiles[0][i][1]] = 1
+        for i in range(4):
+            self.shipBoard[tiles[1][i][0],tiles[1][i][1]] = 2
+        for i in range(3):
+            self.shipBoard[tiles[2][i][0],tiles[2][i][1]] = 3
+        for i in range(3):
+            self.shipBoard[tiles[3][i][0],tiles[3][i][1]] = 4
+        for i in range(2):
+            self.shipBoard[tiles[4][i][0],tiles[4][i][1]] = 5
 
     def recieveAttack(self, x,y):
         # player recieves an attack from other player at position X
@@ -107,5 +98,3 @@ class Player:
         self.Cruiser.reset()
         self.Submarine.reset()
         self.Destroyer.reset()
-
-        
