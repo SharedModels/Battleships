@@ -6,10 +6,12 @@ Created on Sun Sep  2 20:05:22 2018
 """
 import PlayerClass as pc
 import random as r
+import NNAction as nn
 
 class game:
     def __init__(self, runs):
         self.runs = runs
+        self.nn = nn.NNAction()
         
     def placeShip(length):
         """ Places a ship randomly on the board, without crossing the boards
@@ -100,10 +102,15 @@ class game:
                 attacks1.append([i,j]); attacks2.append([i,j])
         r.shuffle(attacks1); r.shuffle(attacks2)
         
+        # Data set up
+        state = []
+        action = []
+        
         # Begin game
         while True:
             if "Afloat" in p1status:
-                attack = attacks1.pop()
+                #attack = attacks1.pop()
+                attack = self.nn.action(p1.bombBoard)
                 p1.sendAttack(p2,attack[0],attack[1])
                 p2status = getstatus(p2)
                 if "Afloat" not in p2status:
