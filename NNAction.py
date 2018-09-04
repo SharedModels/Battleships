@@ -36,7 +36,9 @@ class NNAction:
             action = np.argmax(action_prob)
         else:
             action = np.random.randint(self.output_dim)
-        return action
+        action_2d = (int((action - action%10)/10), action%10)
+
+        return action_2d
 
     def save_data(self, state_data, action_data, reward_data):
         for i in range(len(state_data)):
