@@ -58,19 +58,19 @@ class player:
     def populate(self, tiles):
         for i in range(5):
             self.shipBoard[tiles[0][i][0],tiles[0][i][1]] = 1
-            self.Carrier.addTiles(tiles[0][i][0],tiles[0][i][1])
+            self.Carrier.addTiles([tiles[0][i][0],tiles[0][i][1]])
         for i in range(4):
             self.shipBoard[tiles[1][i][0],tiles[1][i][1]] = 2
-            self.Battleship.addTiles(tiles[1][i][0],tiles[1][i][1])
+            self.Battleship.addTiles([tiles[1][i][0],tiles[1][i][1]])
         for i in range(3):
             self.shipBoard[tiles[2][i][0],tiles[2][i][1]] = 3
-            self.Cruiser(tiles[2][i][0],tiles[2][i][1])
+            self.Cruiser.addTiles([tiles[2][i][0],tiles[2][i][1]])
         for i in range(3):
             self.shipBoard[tiles[3][i][0],tiles[3][i][1]] = 4
-            self.Submarine.addTiles(tiles[3][i][0],tiles[3][i][1])
+            self.Submarine.addTiles([tiles[3][i][0],tiles[3][i][1]])
         for i in range(2):
             self.shipBoard[tiles[4][i][0],tiles[4][i][1]] = 5
-            self.Destroyer.addTiles(tiles[4][i][0],tiles[4][i][1])
+            self.Destroyer.addTiles([tiles[4][i][0],tiles[4][i][1]])
 
     def recieveAttack(self, x,y):
         # player recieves an attack from other player at position X
