@@ -133,10 +133,10 @@ class game:
     def runGames(self):
         for i in range(self.runs):
             state, action, reward = self.playGame()
-          #  self.nn.save_data(state, action, reward)
-           # self.nn.train()
+            self.nn.save_data(state, action, reward)
+            self.nn.train()
             if i % 10:
-                self.nn.target_q_model()
+                self.nn.train_target_q()
 
 
 if __name__ == '__main__':
