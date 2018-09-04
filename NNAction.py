@@ -36,8 +36,8 @@ class NNAction:
         transformed_state = self.transform_state(state)
         if np.random.uniform(0, 1) > self.epsilon:
             action_prob = self.q_model.predict(transformed_state)[0]
-            print(transformed_state)
-            print(action_prob)
+            # print(transformed_state)
+            # print(action_prob)
             action = np.argmax(action_prob)
         else:
             action = np.random.randint(self.output_dim)

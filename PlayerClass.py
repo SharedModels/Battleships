@@ -16,6 +16,7 @@ class Ship:
             self.length = length
             self.hits = 0
             self.status = "Afloat"
+            self.tiles = []
             
         def hit(self, bombBoard):
             self.hits += 1
@@ -23,12 +24,12 @@ class Ship:
             if self.hits == self.length:
                 self.status = "Sunk!"
                 for tile in self.tiles:
-                    bombBoard[tile] = 2
+                    bombBoard[tile[0], tile[1]] = 2
                 # print("Sunk!")
             return self.status
         
         def addTiles(self, tiles):
-            self.tiles = tiles
+            self.tiles.append(tiles)
         
         def reset(self):
             self.hits = 0
