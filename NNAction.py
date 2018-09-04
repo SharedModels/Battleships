@@ -1,9 +1,9 @@
 import keras
 import pandas as pd
 import numpy as np
-from keras.layers import Dense, Input, Activation
-from keras.models import Model
-from keras.optimizers import SGD
+from keras.layers import Dense, Input, Activation, LeakyReLU
+from keras.models import Model, Sequential
+from keras.optimizers import SGD, Adam
 
 
 class NNAction:
@@ -18,11 +18,14 @@ class NNAction:
         self.bellman_value = bellman_value
 
     def build_q_model(self):
-        input_ = Input(shape=self.input_dim, )
-        hidden = Dense(self.hidden_dim, activation='relu')(input_)
-        out = Dense(self.output_dim, activation='relu')(hidden)
-        model = Model(inputs=input_, outputs=out)
-        model.compile(loss='mean_squared_error', optimizer=SGD(0.1), metrics=['accuracy', 'mse'])
+        model = Sequential([
+            Dense(self.hidden_dim, input_shape=self.input_dim),
+            LeakyReLU(),
+            Dense(self.output_dim),
+            # Dropout(self.epsilon),
+            LeakyReLU(),
+        ])
+        model.compile(loss='mean_squared_error', optimizer=Adam(), metrics=['accuracy', 'mse'])
         return model
 
     @staticmethod
@@ -33,10 +36,12 @@ class NNAction:
         transformed_state = self.transform_state(state)
         if np.random.uniform(0, 1) > self.epsilon:
             action_prob = self.q_model.predict(transformed_state)[0]
+            print(transformed_state)
+            print(action_prob)
             action = np.argmax(action_prob)
         else:
             action = np.random.randint(self.output_dim)
-        action_2d = (int((action - action%10)/10), action%10)
+        action_2d = (int((action - action % 10) / 10), action % 10)
 
         return action_2d
 
