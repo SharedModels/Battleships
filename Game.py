@@ -104,13 +104,15 @@ class game:
         # Data set up
         state = []
         action = []
-
+        reward = []
         # Begin game
         while True:
             if "Afloat" in p1status:
                 # attack = attacks1.pop()
+                state.append(p1.bombBoard)
                 attack = self.nn.action(p1.bombBoard)
-                p1.sendAttack(p2, attack[0], attack[1])
+                action.append(attack)
+                reward.append(p1.sendAttack(p2, attack[0], attack[1]))
                 p2status = getstatus(p2)
                 if "Afloat" not in p2status:
                     p1win = True
@@ -126,10 +128,15 @@ class game:
             print("Player 1 wins")
         if p2win == True:
             print("Player 2 wins")
+        return state, action, reward
 
     def runGames(self):
         for i in range(self.runs):
-            self.playGame()
+            state, action, reward = self.playGame()
+          #  self.nn.save_data(state, action, reward)
+           # self.nn.train()
+            if i % 10:
+                self.nn.target_q_model()
 
 
 if __name__ == '__main__':
