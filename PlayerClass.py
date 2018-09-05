@@ -90,17 +90,19 @@ class player:
         self.shipBoard[x,y] = -1
                       
     def sendAttack(self, player2, x, y):
-        sunktiles = player2.recieveAttack(x,y)
+        print(player2.shipBoard[x,y])
         if self.bombBoard[x,y] != 0:
             reward = -100
-        elif player2.shipBoard[x,y] == 0:
+        if player2.shipBoard[x,y] == 0:
             # Miss
             self.bombBoard[x,y] = -1
             reward = 0
+            print("miss")
         else:
             # Hit
             self.bombBoard[x,y] = 1
             reward = 1
+        sunktiles = player2.recieveAttack(x,y)
         
         if sunktiles != [] and sunktiles != None:
             for tile in sunktiles:

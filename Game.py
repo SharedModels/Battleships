@@ -110,6 +110,7 @@ class game:
             if "Afloat" in p1status:
                 # attack = attacks1.pop()
                 state.append(p1.bombBoard)
+                print(p1.bombBoard)
                 attack = self.nn.action(p1.bombBoard)
                 action.append(attack)
                 reward.append(p1.sendAttack(p2, attack[0], attack[1]))
@@ -140,5 +141,5 @@ class game:
 
 
 if __name__ == '__main__':
-    gm = game(100)
+    gm = game(2)
     gm.runGames()
