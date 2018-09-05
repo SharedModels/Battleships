@@ -4,7 +4,7 @@ import NNAction as nn
 
 
 class game:
-    def __init__(self, runs):
+    def __init__(self, runs=100):
         self.runs = runs
         self.nn = nn.NNAction()
 
@@ -140,5 +140,5 @@ class game:
 
 
 if __name__ == '__main__':
-    gm = game(1000)
+    gm = game(100)
     gm.runGames()

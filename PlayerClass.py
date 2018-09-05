@@ -16,20 +16,23 @@ class Ship:
             self.length = length
             self.hits = 0
             self.status = "Afloat"
-            self.tiles = []
+            self.tilestaken = []
+            self.sunktiles = []
             
         def hit(self, bombBoard):
             self.hits += 1
             # print("hit")
             if self.hits == self.length:
                 self.status = "Sunk!"
-                for tile in self.tiles:
-                    bombBoard[tile[0], tile[1]] = 2
+                for tile in self.tilestaken:
+                    #print(tile)
+                    self.sunktiles.append(tile)
+                    #bombBoard[tile] = 2
                 # print("Sunk!")
-            return self.status
+            return self.sunktiles
         
         def addTiles(self, tiles):
-            self.tiles.append(tiles)
+            self.tilestaken.append(tiles)
         
         def reset(self):
             self.hits = 0
@@ -70,18 +73,24 @@ class player:
     def recieveAttack(self, x,y):
         # player recieves an attack from other player at position X
         if self.shipBoard[x,y] == 1:
-            self.Carrier.hit(self.bombBoard)
+            sunktiles = self.Carrier.hit(self.bombBoard)
+            return sunktiles
         if self.shipBoard[x,y] == 2:
-            self.Battleship.hit(self.bombBoard)
+            sunktiles = self.Battleship.hit(self.bombBoard)
+            return sunktiles
         if self.shipBoard[x,y] == 3:
-            self.Cruiser.hit(self.bombBoard)
+            sunktiles = self.Cruiser.hit(self.bombBoard)
+            return sunktiles
         if self.shipBoard[x,y] == 4:
-            self.Submarine.hit(self.bombBoard)
+            sunktiles = self.Submarine.hit(self.bombBoard)
+            return sunktiles
         if self.shipBoard[x,y] == 5:
-            self.Destroyer.hit(self.bombBoard)
+            sunktiles = self.Destroyer.hit(self.bombBoard)
+            return sunktiles
         self.shipBoard[x,y] = -1
                       
     def sendAttack(self, player2, x, y):
+        sunktiles = player2.recieveAttack(x,y)
         if self.bombBoard[x,y] != 0:
             reward = -100
         elif player2.shipBoard[x,y] == 0:
@@ -92,7 +101,10 @@ class player:
             # Hit
             self.bombBoard[x,y] = 1
             reward = 1
-        player2.recieveAttack(x,y)
+        
+        if sunktiles != [] and sunktiles != None:
+            for tile in sunktiles:
+                self.bombBoard[tile[0],tile[1]] = 2
         return reward
 
     def ViewBoard(self):
