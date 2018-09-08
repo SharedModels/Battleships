@@ -109,8 +109,8 @@ class game:
         while True:
             if "Afloat" in p1status:
                 # attack = attacks1.pop()
-                state.append(p1.bombBoard)
-                print(p1.bombBoard)
+                # print(p1.bombBoard)
+                state.append(p1.bombBoard.copy())
                 attack = self.nn.action(p1.bombBoard)
                 action.append(attack)
                 reward.append(p1.sendAttack(p2, attack[0], attack[1]))
@@ -134,12 +134,16 @@ class game:
     def runGames(self):
         for i in range(self.runs):
             state, action, reward = self.playGame()
+            if i % 100 == 0:
+                self.nn.save()
+                print('breakpoint')
+            # print(state[0])
             self.nn.save_data(state, action, reward)
             self.nn.train()
-            if i % 10:
+            if i % 10 == 0:
                 self.nn.train_target_q()
-
+        print('done')
 
 if __name__ == '__main__':
-    gm = game(2)
+    gm = game(10000000)
     gm.runGames()
